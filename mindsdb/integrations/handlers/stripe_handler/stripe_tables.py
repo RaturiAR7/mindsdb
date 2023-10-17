@@ -79,7 +79,6 @@ class ProductsTable(APITable):
         ValueError
             If the query contains an unsupported condition
         """
-
         select_statement_parser = SELECTQueryParser(
             query,
             'products',
@@ -105,6 +104,58 @@ class ProductsTable(APITable):
         stripe = self.handler.connect()
         products = stripe.Product.list(**kwargs)
         return [product.to_dict() for product in products]
+
+    def insert_product(self, data: Dict) -> None:
+        """
+        Insert a new product into the Stripe Products table.
+
+        Parameters
+        ----------
+        data : Dict
+            A dictionary containing the product data.
+
+        Returns
+        -------
+        None
+        """
+        stripe = self.handler.connect()
+        product = stripe.Product.create(**data)
+        return product.to_dict()
+
+    def update_product(self, product_id: str, data: Dict) -> None:
+        """
+        Update an existing product in the Stripe Products table.
+
+        Parameters
+        ----------
+        product_id : str
+            The ID of the product to be updated.
+        data : Dict
+            A dictionary containing the updated product data.
+
+        Returns
+        -------
+        None
+        """
+        stripe = self.handler.connect()
+        product = stripe.Product.modify(product_id, **data)
+        return product.to_dict()
+
+    def delete_product(self, product_id: str) -> None:
+        """
+        Delete an existing product from the Stripe Products table.
+
+        Parameters
+        ----------
+        product_id : str
+            The ID of the product to be deleted.
+
+        Returns
+        -------
+        None
+        """
+        stripe = self.handler.connect()
+        stripe.Product.delete(product_id)
 
 
 class PaymentIntentsTable(APITable):

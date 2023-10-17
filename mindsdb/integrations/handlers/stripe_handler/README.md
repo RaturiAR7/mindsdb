@@ -52,7 +52,9 @@ The Stripe handler is initialized with the following parameters:
     - [x] Support LIMIT
     - [x] Support WHERE
     - [x] Support ORDER BY
-    - [x] Support column selection
+    - [x] Support INSERT
+    - [x] Support UPDATE
+    - [x] Support DELETE
 
 ## TODO
 
@@ -67,26 +69,26 @@ The Stripe handler is initialized with the following parameters:
 
 The first step is to create a database with the new `stripe` engine by passing in the required `api_key` parameter:
 
-~~~~sql
+```sql
 CREATE DATABASE stripe_datasource
 WITH ENGINE = 'stripe',
 PARAMETERS = {
   "api_key": "sk_..."
 };
-~~~~
+```
 
 Use the established connection to query your database:
 
-~~~~sql
+```sql
 SELECT * FROM stripe_datasource.customers
-~~~~
+```
 
 Run more advanced queries:
 
-~~~~sql
+```sql
 SELECT  name, email
 FROM stripe_datasource.customers
 WHERE currency = 'inr'
 ORDER BY name
 LIMIT 5
-~~~~
+```
